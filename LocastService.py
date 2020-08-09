@@ -95,29 +95,6 @@ class LocastService:
             return False
 
 
-        # Check for user's location
-        print("Getting user location...")
-
-        if self.current_location is None:
-            try:
-                # get current location
-                geoReq = urllib2.Request('https://get.geojs.io/v1/ip/geo.json')
-                geoOpn = urllib2.urlopen(geoReq)
-                geoRes = json.load(geoOpn)
-                geoOpn.close()
-            except urllib2.URLError as urlError:
-                print("Error during geo IP acquisition: " + str(urlError.reason))
-                return False
-            except urllib2.HTTPError as httpError:
-                print("Error during geo IP acquisition: " + str(httpError.reason))
-                return False
-            except:
-                geoIpErr = sys.exc_info()[0]
-                print("Error during geo IP acquisition: " + geoIpErr.message)
-                return False
-            print("User location obtained as " + geoRes['latitude'] + '/' + geoRes['longitude'])
-            self.current_location = geoRes
-
 
         # See if we have a market available to the user
         if self.current_dma is None:
@@ -442,4 +419,3 @@ class LocastService:
         else:
             print("No variant streams found for this station.  Assuming single stream only.")
             return videoUrlRes['streamUrl']
-
